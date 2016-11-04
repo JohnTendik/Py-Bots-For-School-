@@ -1,0 +1,33 @@
+import praw
+import time
+import urllib.request, json
+
+
+url = "http://api.icndb.com/jokes/random?exclude=[explicit]"
+
+def response(url):
+    with urllib.request.urlopen(url) as response:
+        return response.read()
+
+r = praw.Reddit('Python Reddit Bot Test For School Project by /u/ThirdEyeCyclops v 1.0. '
+                'Url: https://praw.readthedocs.org/en/latest/'
+                'pages/writing_a_bot.html')
+
+
+r.login('WarBot-Beta','123123l')
+already_done = []
+
+prawWords = ['chuck norris', 'Chuck Norris']
+while True:
+    for comment in praw.helpers.comment_stream(r, 'all'):
+        op_text = comment.body
+        has_praw = any(string in op_text for string in prawWords)
+        # Test if it contains a PRAW-related question
+        if comment.id not in already_done and has_praw:
+            print('found message, replying to', op_text, 'by:', comment.author)
+            res = response(url)
+            joke = json.loads(res.decode())['value']['joke']
+            comment.reply(joke)
+            already_done.append(comment.id)
+    print('pausing for 10 min')
+    time.sleep(600)
