@@ -14,7 +14,7 @@ r = praw.Reddit('Python Reddit Bot Test For School Project by /u/ThirdEyeCyclops
                 'pages/writing_a_bot.html')
 
 
-r.login('WarBot-Beta','123123l')
+r.login('WarBot-Beta')
 already_done = []
 
 prawWords = ['chuck norris', 'Chuck Norris']
